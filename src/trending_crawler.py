@@ -8,8 +8,7 @@ import re
 
 class TrendingNewsCrawler:
     def __init__(self):
-        # config.json 파일 경로를 상위 디렉터리로 수정
-        with open('../config.json', 'r', encoding='utf-8') as f:
+        with open('config.json', 'r', encoding='utf-8') as f:
             self.config = json.load(f)
         
         self.headers = {
@@ -37,24 +36,11 @@ class TrendingNewsCrawler:
     
     def crawl_google_news_trending(self, rss_url, limit=5):
         """구글 뉴스 인기 기사 크롤링"""
-        news_items = []
         try:
             feed = feedparser.parse(rss_url)
+            news_items = []
             
             for entry in feed.entries[:limit]:
                 # 제목에서 불필요한 정보 제거
                 title = entry.title
-                title = re.sub(r'\s*-\s*[^-]*', '', title)
-                
-                news_item = {
-                    "title": title,
-                    "link": entry.link
-                }
-                news_items.append(news_item)
-                
-        except Exception as e:
-            # 예외가 발생했을 때 처리하는 블록
-            print(f"오류가 발생했습니다: {e}")
-            return None # 오류 발생 시 None 반환
-            
-        return news_items
+                title = re.sub(r'\s*-\s*[^-]*
