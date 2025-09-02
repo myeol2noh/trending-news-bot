@@ -2,6 +2,8 @@ name: Auto Trending News Thread Bot (Slack)
 
 on:
   schedule:
+    # 한국시간: 07:00, 09:00, 12:00, 15:00, 18:00, 21:00
+    # UTC 시간:  22:00, 00:00, 03:00, 06:00, 09:00, 12:00 (전날/당일)
     - cron: '0 22 * * *'  # 07:00 KST 
     - cron: '0 0,3,6,9,12 * * *'  # 09:00, 12:00, 15:00, 18:00, 21:00 KST
   
@@ -28,13 +30,13 @@ jobs:
     - name: Run trending news thread bot (Slack)
       env:
         CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  # DISCORD 대신 SLACK
       run: |
         cd src
         python main.py
         
     - name: Upload logs
-      uses: actions/upload-artifact@v4  # v3 → v4로 변경!
+      uses: actions/upload-artifact@v3
       with:
         name: trending-thread-logs
         path: src/logs/
