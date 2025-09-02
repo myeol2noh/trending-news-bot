@@ -43,6 +43,6 @@ class TrendingNewsCrawler:
             for entry in feed.entries[:limit]:
                 # 제목에서 불필요한 정보 제거
                 title = entry.title
-                title = re.sub(r'\s*-\s*[^-]*'
+                title = re.sub(r'\s*-\s*[^-]*', '', title)
 
 
