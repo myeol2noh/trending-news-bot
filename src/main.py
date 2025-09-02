@@ -49,7 +49,7 @@ def main():
         generator = ThreadGenerator()
         
         # 스케줄 설정에서 카테고리 가져오기
-        with open('config.json', 'r', encoding='utf-8') as f:
+        with open('../config.json', 'r', encoding='utf-8') as f:
             config = json.load(f)
         
         category = config['news_sources'][current_schedule]['category']
