@@ -1,0 +1,119 @@
+{
+  "news_sources": {
+    "07:00": {
+      "category": "인기 뉴스",
+      "sources": [
+        {
+          "name": "Google Trends News",
+          "api": "https://serpapi.com/search.json?engine=google_trends&q=trending",
+          "type": "trending"
+        },
+        {
+          "name": "Reddit Hot",
+          "api": "https://www.reddit.com/r/popular/.json?limit=10",
+          "type": "reddit_hot"
+        },
+        {
+          "name": "Naver 실시간 검색어",
+          "url": "https://www.naver.com",
+          "type": "naver_trending"
+        }
+      ]
+    },
+    "09:00": {
+      "category": "인기 뉴스",
+      "sources": [
+        {
+          "name": "Google News Trending",
+          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFZxYUdjU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
+          "keywords": ["trending", "popular", "hot"]
+        },
+        {
+          "name": "BBC Trending", 
+          "rss": "http://feeds.bbci.co.uk/news/rss.xml",
+          "keywords": ["breaking", "trending"]
+        },
+        {
+          "name": "AP News Top Stories",
+          "rss": "https://apnews.com/apf-topnews",
+          "keywords": ["breaking", "top"]
+        }
+      ]
+    },
+    "12:00": {
+      "category": "인기 뉴스", 
+      "sources": [
+        {
+          "name": "Reuters Top News",
+          "rss": "https://feeds.reuters.com/reuters/topNews",
+          "keywords": ["breaking", "urgent", "major"]
+        },
+        {
+          "name": "CNN Breaking",
+          "rss": "http://rss.cnn.com/rss/edition.rss", 
+          "keywords": ["breaking", "trending"]
+        },
+        {
+          "name": "Hacker News Hot",
+          "api": "https://hacker-news.firebaseio.com/v0/topstories.json",
+          "type": "hackernews"
+        }
+      ]
+    },
+    "15:00": {
+      "category": "인기 뉴스",
+      "sources": [
+        {
+          "name": "Twitter Trending Topics",
+          "api": "https://api.twitter.com/1.1/trends/place.json?id=23424868",
+          "type": "twitter_trends"
+        },
+        {
+          "name": "YouTube Trending",
+          "api": "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=KR",
+          "type": "youtube_trending"
+        },
+        {
+          "name": "Google News Korea",
+          "rss": "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko",
+          "keywords": ["속보", "인기", "화제"]
+        }
+      ]
+    },
+    "18:00": {
+      "category": "인기 뉴스",
+      "sources": [
+        {
+          "name": "네이버 뉴스 랭킹",
+          "url": "https://news.naver.com/main/ranking/popularDay.naver",
+          "type": "naver_ranking"
+        },
+        {
+          "name": "다음 실시간 이슈",
+          "url": "https://news.daum.net/ranking/popular",
+          "type": "daum_popular"
+        },
+        {
+          "name": "Reddit WorldNews Hot",
+          "api": "https://www.reddit.com/r/worldnews/hot/.json?limit=10",
+          "type": "reddit_hot"
+        }
+      ]
+    },
+    "21:00": {
+      "category": "인기 뉴스",
+      "sources": [
+        {
+          "name": "Google Trends Real-time",
+          "api": "https://trends.google.com/trends/trendingsearches/daily/rss?geo=KR",
+          "type": "google_trends"
+        },
+        {
+          "name": "종합 인기 뉴스",
+          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFZxYUdjU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
+          "keywords": ["인기", "화제", "이슈", "트렌드"]
+        }
+      ]
+    }
+  }
+}
