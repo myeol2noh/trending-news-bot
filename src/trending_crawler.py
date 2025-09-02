@@ -8,7 +8,8 @@ import re
 
 class TrendingNewsCrawler:
     def __init__(self):
-        with open('config.json', 'r', encoding='utf-8') as f:
+        # config.json 파일 경로를 상위 디렉터리로 수정
+        with open('../config.json', 'r', encoding='utf-8') as f:
             self.config = json.load(f)
         
         self.headers = {
