@@ -12,14 +12,14 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from trending_crawler import TrendingNewsCrawler
 from thread_generator import ThreadGenerator
-from slack_webhook import send_to_slack, send_error_notification  # Discord 대신 Slack
+from telegram_bot import send_to_telegram, send_error_notification_telegram  # Slack 대신 Telegram
 
 def main():
-    """메인 실행: 뉴스 크롤링 → AI 요약 → Slack 전송"""
-    print("=== 자동 인기 뉴스 쓰레드 봇 시작 (Slack 버전) ===")
+    """메인 실행: 뉴스 크롤링 → AI 요약 → 텔레그램 전송"""
+    print("=== 자동 인기 뉴스 쓰레드 봇 시작 (텔레그램 버전) ===")
     
     # 환경 변수 확인
-    required_env = ['CLAUDE_API_KEY', 'SLACK_WEBHOOK_URL']  # DISCORD 대신 SLACK
+    required_env = ['CLAUDE_API_KEY', 'TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID']  # Slack 대신 Telegram
     missing_env = [env for env in required_env if not os.getenv(env)]
     
     if missing_env:
@@ -36,7 +36,7 @@ def main():
         if not trending_news:
             error_msg = "수집된 인기 뉴스가 없습니다"
             print(f"❌ {error_msg}")
-            send_error_notification(error_msg, current_schedule)
+            send_error_notification_telegram(error_msg, current_schedule)
             sys.exit(1)
         
         print(f"✅ {len(trending_news)}개 인기 뉴스 수집 완료")
@@ -58,7 +58,7 @@ def main():
         if not thread_data:
             error_msg = "쓰레드 생성에 실패했습니다"
             print(f"❌ {error_msg}")
-            send_error_notification(error_msg, current_schedule)
+            send_error_notification_telegram(error_msg, current_schedule)
             sys.exit(1)
         
         # 3. 생성 결과 출력
@@ -84,14 +84,14 @@ def main():
             if not is_valid:
                 error_msg = f"쓰레드 품질 검증 실패: {validation_msg}"
                 print(f"⚠️ {error_msg}")
-                send_error_notification(error_msg, current_schedule)
+                send_error_notification_telegram(error_msg, current_schedule)
                 # 품질이 좋지 않아도 일단 전송 (개선 필요시 sys.exit(1) 추가)
         
-        # 5. Slack으로 전송
-        print("\n📤 Slack 전송 중...")
+        # 5. 텔레그램으로 전송
+        print("\n📤 텔레그램 전송 중...")
         
-        # Slack용 메시지 구성
-        slack_thread = {
+        # 텔레그램용 메시지 구성
+        telegram_thread = {
             'time_slot': thread_data['time_slot'],
             'category': thread_data['category'], 
             'keyword': '인기 뉴스',
@@ -101,28 +101,28 @@ def main():
             'trending_info': f"상위 {len(trending_news)}개 인기 뉴스 기반"
         }
         
-        success = send_to_slack(slack_thread)  # Discord 대신 Slack
+        success = send_to_telegram(telegram_thread)  # Slack 대신 Telegram
         
         if success:
-            print("✅ Slack 전송 성공!")
+            print("✅ 텔레그램 전송 성공!")
             
             # 로그 저장
             save_thread_log(thread_data)
             print("✅ 로그 저장 완료!")
             
             print("\n🎉 인기 뉴스 쓰레드 봇 실행 완료!")
-            print("📱 Slack에서 내용을 확인하고 Threads에 올려주세요!")
+            print("📱 텔레그램에서 내용을 확인하고 Threads에 올려주세요!")
             
         else:
-            error_msg = "Slack 전송에 실패했습니다"
+            error_msg = "텔레그램 전송에 실패했습니다"
             print(f"❌ {error_msg}")
-            send_error_notification(error_msg, current_schedule)
+            send_error_notification_telegram(error_msg, current_schedule)
             sys.exit(1)
 
     except Exception as e:
         error_msg = f"예상치 못한 오류 발생: {str(e)}"
         print(f"❌ {error_msg}")
-        send_error_notification(error_msg, current_schedule if 'current_schedule' in locals() else 'Unknown')
+        send_error_notification_telegram(error_msg, current_schedule if 'current_schedule' in locals() else 'Unknown')
         sys.exit(1)
 
 def save_thread_log(thread_data):
