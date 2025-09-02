@@ -4,19 +4,19 @@
       "category": "인기 뉴스",
       "sources": [
         {
-          "name": "Google Trends News",
-          "api": "https://serpapi.com/search.json?engine=google_trends&q=trending",
-          "type": "trending"
+          "name": "Google News Korea",
+          "rss": "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko",
+          "keywords": ["속보", "인기", "화제", "트렌드"]
         },
         {
-          "name": "Reddit Hot",
-          "api": "https://www.reddit.com/r/popular/.json?limit=10",
-          "type": "reddit_hot"
+          "name": "Reuters Top News",
+          "rss": "https://feeds.reuters.com/reuters/topNews",
+          "keywords": ["breaking", "top", "major"]
         },
         {
-          "name": "Naver 실시간 검색어",
-          "url": "https://www.naver.com",
-          "type": "naver_trending"
+          "name": "BBC News",
+          "rss": "http://feeds.bbci.co.uk/news/rss.xml",
+          "keywords": ["breaking", "top"]
         }
       ]
     },
@@ -24,39 +24,39 @@
       "category": "인기 뉴스",
       "sources": [
         {
-          "name": "Google News Trending",
+          "name": "Google News Trending Korea",
           "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFZxYUdjU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
-          "keywords": ["trending", "popular", "hot"]
+          "keywords": ["trending", "popular", "hot", "화제"]
         },
         {
-          "name": "BBC Trending", 
-          "rss": "http://feeds.bbci.co.uk/news/rss.xml",
-          "keywords": ["breaking", "trending"]
-        },
-        {
-          "name": "AP News Top Stories",
+          "name": "AP News Top Stories", 
           "rss": "https://apnews.com/apf-topnews",
           "keywords": ["breaking", "top"]
+        },
+        {
+          "name": "CNN Top Stories",
+          "rss": "http://rss.cnn.com/rss/edition.rss",
+          "keywords": ["breaking", "trending"]
         }
       ]
     },
     "12:00": {
-      "category": "인기 뉴스", 
+      "category": "인기 뉴스",
       "sources": [
         {
-          "name": "Reuters Top News",
-          "rss": "https://feeds.reuters.com/reuters/topNews",
-          "keywords": ["breaking", "urgent", "major"]
+          "name": "Google News World",
+          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFZxYUdjU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
+          "keywords": ["major", "important", "breaking"]
         },
         {
-          "name": "CNN Breaking",
-          "rss": "http://rss.cnn.com/rss/edition.rss", 
-          "keywords": ["breaking", "trending"]
+          "name": "Reuters World News",
+          "rss": "https://feeds.reuters.com/Reuters/worldNews",
+          "keywords": ["world", "international", "global"]
         },
         {
-          "name": "Hacker News Hot",
-          "api": "https://hacker-news.firebaseio.com/v0/topstories.json",
-          "type": "hackernews"
+          "name": "BBC World News",
+          "rss": "http://feeds.bbci.co.uk/news/world/rss.xml",
+          "keywords": ["world", "international"]
         }
       ]
     },
@@ -64,19 +64,19 @@
       "category": "인기 뉴스",
       "sources": [
         {
-          "name": "Twitter Trending Topics",
-          "api": "https://api.twitter.com/1.1/trends/place.json?id=23424868",
-          "type": "twitter_trends"
+          "name": "Google News Business",
+          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
+          "keywords": ["business", "economy", "market", "경제"]
         },
         {
-          "name": "YouTube Trending",
-          "api": "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=KR",
-          "type": "youtube_trending"
+          "name": "Reuters Business",
+          "rss": "https://feeds.reuters.com/reuters/businessNews",
+          "keywords": ["business", "market", "economy"]
         },
         {
-          "name": "Google News Korea",
-          "rss": "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko",
-          "keywords": ["속보", "인기", "화제"]
+          "name": "BBC Business", 
+          "rss": "http://feeds.bbci.co.uk/news/business/rss.xml",
+          "keywords": ["business", "economy"]
         }
       ]
     },
@@ -84,19 +84,19 @@
       "category": "인기 뉴스",
       "sources": [
         {
-          "name": "네이버 뉴스 랭킹",
-          "url": "https://news.naver.com/main/ranking/popularDay.naver",
-          "type": "naver_ranking"
+          "name": "Google News Technology",
+          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
+          "keywords": ["technology", "tech", "AI", "기술"]
         },
         {
-          "name": "다음 실시간 이슈",
-          "url": "https://news.daum.net/ranking/popular",
-          "type": "daum_popular"
+          "name": "Reuters Technology",
+          "rss": "https://feeds.reuters.com/reuters/technologyNews",
+          "keywords": ["technology", "tech", "digital"]
         },
         {
-          "name": "Reddit WorldNews Hot",
-          "api": "https://www.reddit.com/r/worldnews/hot/.json?limit=10",
-          "type": "reddit_hot"
+          "name": "BBC Technology",
+          "rss": "http://feeds.bbci.co.uk/news/technology/rss.xml", 
+          "keywords": ["technology", "tech"]
         }
       ]
     },
@@ -104,14 +104,19 @@
       "category": "인기 뉴스",
       "sources": [
         {
-          "name": "Google Trends Real-time",
-          "api": "https://trends.google.com/trends/trendingsearches/daily/rss?geo=KR",
-          "type": "google_trends"
+          "name": "Google News Entertainment",
+          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNREZqY0hrU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
+          "keywords": ["entertainment", "celebrity", "culture", "연예"]
         },
         {
-          "name": "종합 인기 뉴스",
-          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFZxYUdjU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
-          "keywords": ["인기", "화제", "이슈", "트렌드"]
+          "name": "Reuters Lifestyle",
+          "rss": "https://feeds.reuters.com/reuters/lifestyle",
+          "keywords": ["lifestyle", "culture", "entertainment"]
+        },
+        {
+          "name": "BBC Entertainment",
+          "rss": "http://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml",
+          "keywords": ["entertainment", "arts", "culture"]
         }
       ]
     }
