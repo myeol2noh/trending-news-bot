@@ -12,8 +12,11 @@ class IssueGenerator:
         self.icons = ['🔥', '⚡', '💥', '🚨', '📢', '🎯', '💡', '🌟', '🔔', '💫']
     
     def generate_issue_list(self, news_items, time_slot):
-        """이슈 리스트 생성 (10개, 35자 이내) - 축약된 프롬프트"""
+        """이슈 리스트 생성 (10개, 35자 이내) - 디버깅 추가"""
+        print(f"🔍 generate_issue_list 시작 - 뉴스 개수: {len(news_items)}")
+        
         if not news_items or len(news_items) < 8:
+            print(f"❌ 뉴스 개수 부족: {len(news_items)}개")
             return None
         
         # 뉴스 제목을 더 간단하게 정리 (8개만, 제목 단축)
@@ -21,6 +24,7 @@ class IssueGenerator:
         for i, news in enumerate(news_items[:8], 1):
             title = news['title'][:60]  # 60자로 제한
             news_titles += f"{i}. {title}\n"
+            print(f"  뉴스 {i}: {title}")
         
         # 매우 간단한 프롬프트
         prompt = f"""다음 뉴스를 20대 여성 반말로 10개 요약해줘. 각 35자 이내.
@@ -29,6 +33,9 @@ class IssueGenerator:
 
 형식: 1. 내용요약
 시간: {time_slot}"""
+
+        print(f"📝 프롬프트 길이: {len(prompt)}자")
+        print(f"📝 프롬프트 내용: {prompt[:200]}...")
 
         # 재시도 로직
         max_retries = 3
@@ -44,21 +51,36 @@ class IssueGenerator:
                 )
                 
                 content = response.content[0].text.strip()
+                print(f"✅ AI 응답 받음 - 길이: {len(content)}자")
+                print(f"📄 AI 응답 내용: {content}")
                 
                 # 아이콘 추가 처리
                 lines = content.split('\n')
+                print(f"🔍 응답을 {len(lines)}개 줄로 분리")
+                
                 result_lines = []
                 
                 for i, line in enumerate(lines):
+                    print(f"  줄 {i}: '{line.strip()}'")
                     if line.strip() and i < 10:
                         # 번호 부분을 아이콘으로 교체
                         if line.strip().startswith(f"{i+1}."):
                             icon = self.icons[i] if i < len(self.icons) else '📌'
                             new_line = line.replace(f"{i+1}.", f"{icon}")
                             result_lines.append(new_line)
+                            print(f"    → 변환: '{new_line}'")
+                        else:
+                            print(f"    → 패턴 불일치: 시작문자 '{line.strip()[:10]}'")
                 
                 result = '\n'.join(result_lines)
+                print(f"🎯 최종 결과 길이: {len(result)}자")
+                print(f"🎯 최종 결과: {result}")
                 print(f"✅ AI 요청 성공 (시도 {attempt + 1})")
+                
+                if not result.strip():
+                    print("❌ 빈 결과 반환")
+                    return None
+                
                 return result
                 
             except Exception as e:
@@ -70,13 +92,17 @@ class IssueGenerator:
                 time.sleep(2 * (attempt + 1))  # 지수적 백오프
     
     def generate_hot_issue(self, news_items):
-        """오늘의 핫이슈 생성 (300자 이내) - 축약된 프롬프트"""
+        """오늘의 핫이슈 생성 (300자 이내) - 디버깅 추가"""
+        print(f"🔍 generate_hot_issue 시작 - 뉴스 개수: {len(news_items)}")
+        
         if not news_items:
+            print("❌ 뉴스 없음")
             return None
         
         # 가장 인기 있는 뉴스 1개 선택
         top_news = news_items[0]
         title = top_news['title'][:80]  # 제목 80자로 제한
+        print(f"📰 선택된 뉴스: {title}")
         
         # 매우 간단한 프롬프트
         prompt = f"""이 뉴스를 20대 여성 반말로 300자 이내 요약:
@@ -84,6 +110,8 @@ class IssueGenerator:
 제목: {title}
 
 조건: 친근한 반말, 배경설명 포함"""
+
+        print(f"📝 핫이슈 프롬프트 길이: {len(prompt)}자")
 
         # 재시도 로직
         max_retries = 3
@@ -99,7 +127,14 @@ class IssueGenerator:
                 )
                 
                 result = response.content[0].text.strip()
+                print(f"✅ 핫이슈 AI 응답 받음 - 길이: {len(result)}자")
+                print(f"📄 핫이슈 내용: {result}")
                 print(f"✅ 핫이슈 AI 요청 성공 (시도 {attempt + 1})")
+                
+                if not result.strip():
+                    print("❌ 빈 핫이슈 결과 반환")
+                    return None
+                
                 return result
                 
             except Exception as e:
@@ -127,6 +162,7 @@ if __name__ == "__main__":
     print("=== 이슈 리스트 테스트 ===")
     issues = generator.generate_issue_list(test_news, '07:00')
     if issues:
+        print("최종 이슈 리스트:")
         print(issues)
     else:
         print("이슈 리스트 생성 실패")
@@ -134,6 +170,7 @@ if __name__ == "__main__":
     print("\n=== 핫이슈 테스트 ===")
     hot_issue = generator.generate_hot_issue([test_news[0]])
     if hot_issue:
+        print("최종 핫이슈:")
         print(hot_issue)
     else:
         print("핫이슈 생성 실패")
