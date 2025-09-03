@@ -54,12 +54,11 @@ class IssueGenerator:
                 print(f"✅ AI 응답 받음 - 길이: {len(content)}자")
                 print(f"📄 AI 응답 내용: {content}")
                 
-                # 아이콘 추가 처리 - 개선된 버전
+                # 번호 그대로 유지 (아이콘 교체 안 함)
                 lines = content.split('\n')
                 print(f"🔍 응답을 {len(lines)}개 줄로 분리")
                 
                 result_lines = []
-                icon_index = 0
                 
                 for line in lines:
                     line_clean = line.strip()
@@ -69,14 +68,10 @@ class IssueGenerator:
                         # 숫자로 시작하는 줄 찾기 (1., 2., 3. 등)
                         import re
                         if re.match(r'^\d+\.', line_clean):
-                            # 번호를 아이콘으로 교체
-                            icon = self.icons[icon_index] if icon_index < len(self.icons) else '📌'
-                            new_line = re.sub(r'^\d+\.', icon, line_clean)
-                            result_lines.append(new_line)
-                            print(f"    → 변환: '{new_line}'")
-                            icon_index += 1
+                            result_lines.append(line_clean)  # 번호 그대로 사용
+                            print(f"    → 추가: '{line_clean}'")
                             
-                            if icon_index >= 10:  # 최대 10개
+                            if len(result_lines) >= 10:  # 최대 10개
                                 break
                         else:
                             print(f"    → 숫자 패턴 없음: '{line_clean[:20]}'")
