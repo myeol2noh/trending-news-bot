@@ -45,8 +45,8 @@ class IssueGenerator:
                 
                 response = self.client.messages.create(
                     model="claude-sonnet-4-20250514",
-                    max_tokens=250,  # 더 줄임
-                    temperature=0.2,  # 더 안정적으로
+                    max_tokens=400,  # 250에서 400으로 늘림 (토큰 제한 완화)
+                    temperature=0.1,  # 더 정확하게
                     messages=[{"role": "user", "content": prompt}]
                 )
                 
