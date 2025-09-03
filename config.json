@@ -1,122 +1,42 @@
 {
   "news_sources": {
     "07:00": {
-      "category": "인기 뉴스",
+      "category": "오전 이슈",
       "sources": [
         {
-          "name": "Google News Korea",
-          "rss": "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko",
-          "keywords": ["속보", "인기", "화제", "트렌드"]
-        },
-        {
-          "name": "Reuters Top News",
-          "rss": "https://feeds.reuters.com/reuters/topNews",
-          "keywords": ["breaking", "top", "major"]
-        },
-        {
-          "name": "BBC News",
-          "rss": "http://feeds.bbci.co.uk/news/rss.xml",
-          "keywords": ["breaking", "top"]
-        }
-      ]
-    },
-    "09:00": {
-      "category": "인기 뉴스",
-      "sources": [
-        {
-          "name": "Google News Trending Korea",
-          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFZxYUdjU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
-          "keywords": ["trending", "popular", "hot", "화제"]
-        },
-        {
-          "name": "AP News Top Stories", 
-          "rss": "https://apnews.com/apf-topnews",
-          "keywords": ["breaking", "top"]
-        },
-        {
-          "name": "CNN Top Stories",
-          "rss": "http://rss.cnn.com/rss/edition.rss",
-          "keywords": ["breaking", "trending"]
+          "name": "네이버 뉴스 랭킹",
+          "url": "https://news.naver.com/main/ranking/popularDay.naver",
+          "type": "naver_ranking"
         }
       ]
     },
     "12:00": {
-      "category": "인기 뉴스",
+      "category": "정오 이슈", 
       "sources": [
         {
-          "name": "Google News World",
-          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFZxYUdjU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
-          "keywords": ["major", "important", "breaking"]
-        },
-        {
-          "name": "Reuters World News",
-          "rss": "https://feeds.reuters.com/Reuters/worldNews",
-          "keywords": ["world", "international", "global"]
-        },
-        {
-          "name": "BBC World News",
-          "rss": "http://feeds.bbci.co.uk/news/world/rss.xml",
-          "keywords": ["world", "international"]
-        }
-      ]
-    },
-    "15:00": {
-      "category": "인기 뉴스",
-      "sources": [
-        {
-          "name": "Google News Business",
-          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
-          "keywords": ["business", "economy", "market", "경제"]
-        },
-        {
-          "name": "Reuters Business",
-          "rss": "https://feeds.reuters.com/reuters/businessNews",
-          "keywords": ["business", "market", "economy"]
-        },
-        {
-          "name": "BBC Business", 
-          "rss": "http://feeds.bbci.co.uk/news/business/rss.xml",
-          "keywords": ["business", "economy"]
+          "name": "네이버 뉴스 랭킹",
+          "url": "https://news.naver.com/main/ranking/popularDay.naver",
+          "type": "naver_ranking"
         }
       ]
     },
     "18:00": {
-      "category": "인기 뉴스",
+      "category": "저녁 이슈",
       "sources": [
         {
-          "name": "Google News Technology",
-          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
-          "keywords": ["technology", "tech", "AI", "기술"]
-        },
-        {
-          "name": "Reuters Technology",
-          "rss": "https://feeds.reuters.com/reuters/technologyNews",
-          "keywords": ["technology", "tech", "digital"]
-        },
-        {
-          "name": "BBC Technology",
-          "rss": "http://feeds.bbci.co.uk/news/technology/rss.xml", 
-          "keywords": ["technology", "tech"]
+          "name": "네이버 뉴스 랭킹", 
+          "url": "https://news.naver.com/main/ranking/popularDay.naver",
+          "type": "naver_ranking"
         }
       ]
     },
-    "21:00": {
-      "category": "인기 뉴스",
+    "20:00": {
+      "category": "오늘의 핫이슈",
       "sources": [
         {
-          "name": "Google News Entertainment",
-          "rss": "https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNREZqY0hrU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR:ko",
-          "keywords": ["entertainment", "celebrity", "culture", "연예"]
-        },
-        {
-          "name": "Reuters Lifestyle",
-          "rss": "https://feeds.reuters.com/reuters/lifestyle",
-          "keywords": ["lifestyle", "culture", "entertainment"]
-        },
-        {
-          "name": "BBC Entertainment",
-          "rss": "http://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml",
-          "keywords": ["entertainment", "arts", "culture"]
+          "name": "네이버 뉴스 랭킹",
+          "url": "https://news.naver.com/main/ranking/popularDay.naver", 
+          "type": "naver_hot_issue"
         }
       ]
     }
