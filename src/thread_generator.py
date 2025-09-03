@@ -3,131 +3,138 @@ from anthropic import Anthropic
 from datetime import datetime
 import pytz
 
-class ThreadGenerator:
+class IssueGenerator:
     def __init__(self):
         self.client = Anthropic(api_key=os.getenv('CLAUDE_API_KEY'))
+        
+        # 아이콘 리스트
+        self.icons = ['🔥', '⚡', '💥', '🚨', '📢', '🎯', '💡', '🌟', '🔔', '💫']
     
-    def generate_thread_from_news(self, news_items, category, time_slot):
-        """인기 뉴스 기반 쓰레드 생성"""
-        if not news_items:
+    def generate_issue_list(self, news_items, time_slot):
+        """이슈 리스트 생성 (10개, 35자 이내)"""
+        if not news_items or len(news_items) < 10:
             return None
         
-        # 인기 뉴스 요약을 위한 프롬프트 구성
-        news_summary = ""
-        for i, news in enumerate(news_items[:3], 1):  # 상위 3개만 사용
-            popularity = news.get('popularity_score', 0)
-            news_summary += f"{i}. {news['title']}\n"
-            if news['summary']:
-                news_summary += f"   요약: {news['summary'][:100]}...\n"
-            news_summary += f"   출처: {news.get('source', 'Unknown')}\n"
-            news_summary += f"   인기도: {popularity}\n\n"
+        # 뉴스 제목들을 요약
+        news_titles = ""
+        for i, news in enumerate(news_items, 1):
+            news_titles += f"{i}. {news['title']}\n"
         
-        # 시간대별 맞춤 프롬프트
         time_context = {
-            "07:00": "아침 출근 준비하는 사람들을 위한 간결한 뉴스 브리핑",
-            "09:00": "출근길에서 읽기 좋은 핵심 뉴스",
-            "12:00": "점심시간 휴식 중 확인하는 주요 이슈",
-            "15:00": "오후 업무 중 알아둘 만한 소식",
-            "18:00": "퇴근길에서 챙겨볼 중요 뉴스",
-            "21:00": "하루 마무리하며 정리하는 주요 소식"
+            "07:00": "아침에 체크할 주요 이슈들",
+            "12:00": "점심시간에 알아둘 핫한 소식들", 
+            "18:00": "퇴근길에 확인할 오늘의 이슈들"
         }
         
-        context = time_context.get(time_slot, "주요 뉴스 정리")
+        context = time_context.get(time_slot, "주요 이슈들")
         
         prompt = f"""
-다음은 현재 가장 인기 있는 뉴스들입니다. 이를 바탕으로 {context} 스타일의 쓰레드를 한국어로 작성해주세요.
+다음 네이버 뉴스들을 바탕으로 {context}를 20대 여성 반말체로 정리해줘.
 
-=== 인기 뉴스 TOP 3 ===
-{news_summary}
+=== 네이버 뉴스 제목들 ===
+{news_titles}
 
 조건:
-- 200자 이내 (공백 포함)
-- 가장 화제가 되는 뉴스 1-2개 선별해서 핵심만
-- 왜 지금 인기/화제인지 이유 포함
-- 구체적인 숫자나 사실 활용
-- 3-4개 짧고 임팩트 있는 문장
-- 뉴스픽 스타일: 간결하고 팩트 중심, 트렌드 감각
-- 이모지 1-2개만 사용
+- 정확히 10개 항목
+- 각 항목은 35자 이내 (공백 포함)
+- 20대 여성 반말체 (친근하고 캐주얼하게)
+- 아이콘은 사용하지 말고 번호만 사용
+- 형식: 1. [35자 이내 요약]
+- 텔레그램에서 복사해서 스레드에 바로 붙여넣을 수 있게 본문만
+- 다른 부연설명이나 인사말 없이 리스트만
 
-형식 예시:
-🔥 [가장 화제가 되는 뉴스 팩트]
-💡 [왜 지금 인기인지/중요한지 분석]  
-⚡ [관련 트렌드나 향후 전망]
+예시 형식:
+1. 윤대통령 탄핵안 가결, 헌재 심판 시작돼
+2. 비트코인 10만달러 돌파, 가상화폐 열풍
+3. ...
 
-시간대: {time_slot} ({context})
-현재 시각: {datetime.now(pytz.timezone('Asia/Seoul')).strftime('%Y-%m-%d %H:%M')}
+시간: {time_slot}
 """
 
         try:
             response = self.client.messages.create(
                 model="claude-sonnet-4-20250514",
-                max_tokens=300,
-                temperature=0.6,  # 약간의 창의성 허용
+                max_tokens=400,
+                temperature=0.3,
                 messages=[{"role": "user", "content": prompt}]
             )
             
-            thread_content = response.content[0].text.strip()
+            content = response.content[0].text.strip()
             
-            return {
-                "time_slot": time_slot,
-                "category": category,
-                "content": thread_content,
-                "source_news": news_items[:3],
-                "generated_at": datetime.now(pytz.timezone('Asia/Seoul')).isoformat(),
-                "char_count": len(thread_content),
-                "trending_context": context
-            }
+            # 아이콘 추가
+            lines = content.split('\n')
+            result_lines = []
+            
+            for i, line in enumerate(lines):
+                if line.strip() and i < 10:
+                    # 번호 부분을 아이콘으로 교체
+                    if line.strip().startswith(f"{i+1}."):
+                        icon = self.icons[i] if i < len(self.icons) else '📌'
+                        new_line = line.replace(f"{i+1}.", f"{icon}")
+                        result_lines.append(new_line)
+            
+            return '\n'.join(result_lines)
             
         except Exception as e:
-            print(f"쓰레드 생성 오류: {e}")
+            print(f"이슈 리스트 생성 오류: {e}")
             return None
     
-    def validate_thread(self, content):
-        """쓰레드 품질 검증"""
-        if not content:
-            return False, "내용이 없습니다"
+    def generate_hot_issue(self, news_items):
+        """오늘의 핫이슈 생성 (300자 이내)"""
+        if not news_items:
+            return None
         
-        # 길이 체크
-        if len(content) < 50:
-            return False, "너무 짧습니다 (50자 미만)"
-        if len(content) > 250:
-            return False, "너무 깁니다 (250자 초과)"
+        # 가장 인기 있는 뉴스 1개 선택
+        top_news = news_items[0]
         
-        # 기본 요소 체크
-        has_emoji = any(ord(char) > 127 for char in content if not char.isalnum())
-        has_number = any(char.isdigit() for char in content)
-        
-        if not has_emoji:
-            return False, "이모지가 없습니다"
-        if not has_number:
-            return False, "구체적인 숫자가 없습니다"
-        
-        return True, "검증 통과"
+        prompt = f"""
+다음 뉴스를 바탕으로 오늘의 가장 핫한 이슈를 20대 여성 반말체로 300자 이내로 정리해줘.
 
-# 테스트용
+=== 오늘의 탑 뉴스 ===
+제목: {top_news['title']}
+
+조건:
+- 300자 이내 (공백 포함)
+- 20대 여성 반말체 (친근하고 자연스럽게)
+- 왜 이 이슈가 핫한지, 배경과 현재 상황 포함
+- 텔레그램에서 복사해서 스레드에 바로 붙여넣을 수 있게 본문만
+- 다른 부연설명이나 제목 없이 내용만
+- 아이콘이나 이모지 사용하지 말것
+
+예시 톤:
+윤석열 대통령 탄핵소추안이 국회를 통과했어. 계엄령 선포 후폭풍이 이렇게까지 클 줄 몰랐는데... 헌법재판소에서 최종 결정이 나올 때까지 직무가 정지되고, 한덕수 총리가 권한대행을 맡게 됐대. 정치권은 완전 뒤바뀔 분위기고, 경제에도 영향이 클 것 같아서 걱정이야.
+"""
+
+        try:
+            response = self.client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=400,
+                temperature=0.4,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            
+            return response.content[0].text.strip()
+            
+        except Exception as e:
+            print(f"핫이슈 생성 오류: {e}")
+            return None
+
 if __name__ == "__main__":
-    generator = ThreadGenerator()
+    # 테스트용
+    generator = IssueGenerator()
     test_news = [
-        {
-            "title": "삼성전자 3분기 실적 발표, 반도체 회복세",
-            "summary": "메모리 반도체 가격 상승으로 영업이익 증가",
-            "source": "네이버 뉴스",
-            "popularity_score": 1250
-        },
-        {
-            "title": "테슬라 자율주행 업데이트 논란",
-            "summary": "FSD 베타 버전에서 안전성 문제 제기",
-            "source": "Reddit",
-            "popularity_score": 890
-        }
+        {'title': '윤석열 대통령 탄핵소추안 국회 통과', 'link': 'http://test.com'},
+        {'title': '비트코인 사상 첫 10만달러 돌파', 'link': 'http://test.com'},
     ]
     
-    thread = generator.generate_thread_from_news(test_news, "인기 뉴스", "09:00")
-    if thread:
-        print("=== 생성된 쓰레드 ===")
-        print(f"내용: {thread['content']}")
-        print(f"글자수: {thread['char_count']}자")
-        
-        # 품질 검증
-        is_valid, message = generator.validate_thread(thread['content'])
-        print(f"검증 결과: {message}")
+    # 이슈 리스트 테스트
+    issues = generator.generate_issue_list(test_news * 5, '07:00')  # 10개 만들기
+    if issues:
+        print("=== 이슈 리스트 ===")
+        print(issues)
+    
+    # 핫이슈 테스트
+    hot_issue = generator.generate_hot_issue([test_news[0]])
+    if hot_issue:
+        print("\n=== 오늘의 핫이슈 ===")
+        print(hot_issue)
